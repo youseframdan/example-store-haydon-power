@@ -1,0 +1,320 @@
+{{ 'section-Plan-Picker.css' | asset_url | stylesheet_tag }}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  .color-{{ section.id }}-background-colour {
+    background-color: {{ section.settings.background-colour }} ;
+  }
+{%- endstyle -%}
+<div class="Plan-Picker  color-{{ section.settings.color_scheme }}">
+  <div class="Plan-Picker-container  content-container page-width  section-{{ section.id }}-padding">
+    <div class="Plan-Picker__content grid ">
+      <div class="Plan-Picker__content-image  ">
+        <svg width="233" height="233" viewBox="0 0 233 233" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M186.777 204.706C235.387 165.998 243.415 95.2118 204.706 46.6013C165.998 -2.00907 95.2123 -10.0363 46.6019 28.672C-2.00851 67.3802 -10.0358 138.166 28.6725 186.776C67.3808 235.387 138.167 243.414 186.777 204.706Z" fill="#FFF5DD" stroke="#620336" stroke-width="6.46071" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+      <div class="Plan-Picker-Subheading rte ">
+        {{ section.settings.Subheading | replace: 'p>', 'span>' }}
+      </div>
+
+      <div class="Plan-Picker__Heading title h0 color-{{ section.settings.heading_color }} ">
+        {{ section.settings.heading }}
+      </div>
+
+      <div class="Plan-Picker__Description rte">
+        {{ section.settings.Description }}
+      </div>
+      <div class="Plan-Picker__grid grid carousel  grid--3-col-desktop grid--3-col-tablet grid--1-col  content-container--full-width-mobile">
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {%- when 'card-block' -%}
+              <div class="card-block_item  grid grid__item color-{{ section.settings.heading_color }} ">
+                {%- if block.settings['Most-Popular_checkbox'] != true -%}
+                  <div class="card-block_item__Most Popular rte">Most Popular</div>
+                {%- endif -%}
+
+                <h2 class="card-block__Title rte">
+                  {{ block.settings.Title }}
+                </h2>
+                <div class="card-block__Price_text rte">
+                  {{ block.settings.Price_text }}
+                </div>
+                <div
+                  class="card-block_image media "
+                  style=" height: {{ section.settings.image.height }}px; padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
+                >
+                  {%- if block.settings.image != blank -%}
+                    {%- capture sizes -%}
+                          (min-width: 1400px) 100vw, (min-width: 750px) 100vw, calc((100vw - 30px) / 2)
+                      {%- endcapture -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 1500
+                      | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </div>
+                <div class="card-block__USP-list ">
+                  <div class="card-block__USP-list-svg ">
+                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_1_200)">
+                      <path d="M13 25.9998C20.1797 25.9998 26 20.1795 26 12.9998C26 5.82005 20.1797 -0.000244141 13 -0.000244141C5.8203 -0.000244141 0 5.82005 0 12.9998C0 20.1795 5.8203 25.9998 13 25.9998Z" fill="#620336"/>
+                      <path d="M7.28442 14.3332L11.0939 17.619L18.713 8.38086" stroke="#FFF5DD" stroke-width="2.38095" stroke-miterlimit="10"/>
+                      </g>
+                      <defs>
+                      <clipPath id="clip0_1_200">
+                      <rect width="26" height="26" fill="white" transform="translate(0 -0.000244141)"/>
+                      </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div class="card-block__USP-list-text rte">
+                    {{ block.settings['USP-list-text'] }}
+                  </div>
+                </div>
+                <div class="card-block__Button ">
+                  <div class="card-block__Button_Get-started ">
+                    {{ block.settings['Get-started'] }}
+                  </div>
+                  <div class="card-block__Button-svg ">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g clip-path="url(#clip0_18_32)">
+                      <path d="M9.0062 18.0122C13.9802 18.0122 18.0124 13.9799 18.0124 9.00596C18.0124 4.03197 13.9802 -0.000244141 9.0062 -0.000244141C4.03221 -0.000244141 0 4.03197 0 9.00596C0 13.9799 4.03221 18.0122 9.0062 18.0122Z" fill="#235C55"/>
+                      <path d="M7.57965 13.5959L6.2771 12.2685L9.72576 8.86948L6.30191 5.75577L7.55484 4.37878L12.4301 8.81986L7.57965 13.5959Z" fill="#BDEC70"/>
+                      </g>
+                      <defs>
+                      <clipPath id="clip0_18_32">
+                      <rect width="18" height="18" fill="white" transform="translate(0 -0.000244141)"/>
+                      </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+                <div class="card-block__Footer-Note ">
+                  {{ block.settings['Footer-Note'] }}
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1_244)">
+                    <path d="M5.46 10.9198C8.47548 10.9198 10.92 8.47523 10.92 5.45976C10.92 2.44428 8.47548 -0.000244141 5.46 -0.000244141C2.44453 -0.000244141 0 2.44428 0 5.45976C0 8.47523 2.44453 10.9198 5.46 10.9198Z" fill="#620336"/>
+                    <path d="M5.45009 2.59973C5.80009 2.59973 6.07009 2.84973 6.07009 3.17973C6.07009 3.50973 5.80009 3.75973 5.45009 3.75973C5.10009 3.75973 4.84009 3.48973 4.84009 3.17973C4.84009 2.86973 5.10009 2.59973 5.45009 2.59973ZM4.98009 4.47973H5.94009V8.31973H4.98009V4.47973Z" fill="#FFF5DD"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_1_244">
+                    <rect width="10.92" height="10.92" fill="white" transform="translate(0 -0.000244141)"/>
+                    </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $('.carousel').slick({
+      speed: 500,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      dots: true,
+      centerMode: true,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            // centerMode: true,
+          },
+        },
+        {
+          breakpoint: 800,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            dots: true,
+            infinite: true,
+          },
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+          },
+        },
+      ],
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "Plan Picker",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-1",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "text",
+      "id": "Subheading",
+      "default": "COPY TO GO HERE",
+      "label": "Subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Title for this section to go here",
+      "label": "Heading"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "default": "#000",
+      "label": "heading color"
+    },
+    {
+      "type": "text",
+      "id": "Description",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "label": "Description"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "card-block",
+      "type": "card-block",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "Most-Popular_checkbox",
+          "default": true,
+          "label": "Most Popular (Checkbox)"
+        },
+        {
+          "type": "text",
+          "id": "Title",
+          "label": "Title",
+          "default": "5 Days"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "Price_text",
+          "default": "£44.56 - £23.95 £5.69 / per day",
+          "label": "Price"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "USP-list-text",
+          "default": "Plus FREE delivery (worth £5.99)",
+          "label": "list-text"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "Savings",
+          "default": "Savings £22.99",
+          "label": "Savings"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "Get-started",
+          "default": "Get started",
+          "label": "Button"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "Footer-Note",
+          "default": "📦 How does it work?",
+          "label": "Footer Note"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Plan Picker",
+      "blocks": [
+        {
+          "type": "card-block"
+        },
+        {
+          "type": "card-block"
+        },
+        {
+          "type": "card-block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
