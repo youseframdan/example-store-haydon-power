@@ -1,30 +1,23 @@
 {{ 'section-Plan-Picker.css' | asset_url | stylesheet_tag }}
-<link rel="stylesheet" href="/path/to/flickity.css" media="screen">
+<link rel="stylesheet" href="/assets/flickity.css" media="screen">
 {%- style -%}
-           .section-{{ section.id }}-padding {
-             padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-             padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-           }
-
-           @media screen and (min-width: 750px) {
-             .section-{{ section.id }}-padding {
-               padding-top: {{ section.settings.padding_top }}px;
-               padding-bottom: {{ section.settings.padding_bottom }}px;
-             }
-           }
-           .color-{{ section.id }}-heading {
-             color: {{ section.settings.heading_color }} ;
-           }
-           .background-{{ section.id }}-image {
-             background-image: {{ section.settings.background-image }} ;
-           }
-     @media screen and (max-width: 749px) {
-       .content__grid input[type="radio"]#radio-slider-{{ block.id }}:checked~label[for="radio-slider-{{ block.id }}"] {
-    margin-left: 145px;
-    display: block;
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
-   }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  .color-{{ section.id }}-heading {
+    color: {{ section.settings.heading_color }} ;
+  }
+  .background-{{ section.id }}-image {
+    background-image: {{ section.settings.background-image }} ;
+  }
 {%- endstyle -%}
 <div class="Plan-Picker  color-{{ section.settings.color_scheme }}">
   <div class="Plan-Picker-container  content-container page-width  section-{{ section.id }}-padding">
@@ -173,8 +166,9 @@
       </div>
     </div>
   </div>
-  <script src="/path/to/flickity.pkgd.min.js"></script>
 </div>
+<script src="/assets/facets.js"></script>
+
 {% schema %}
 {
   "name": "Plan Picker",
