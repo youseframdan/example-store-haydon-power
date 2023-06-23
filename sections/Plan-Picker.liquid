@@ -1,45 +1,78 @@
 {{ 'section-Plan-Picker.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="/path/to/flickity.css" media="screen">
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+           .section-{{ section.id }}-padding {
+             padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+             padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+           }
+
+           @media screen and (min-width: 750px) {
+             .section-{{ section.id }}-padding {
+               padding-top: {{ section.settings.padding_top }}px;
+               padding-bottom: {{ section.settings.padding_bottom }}px;
+             }
+           }
+           .color-{{ section.id }}-heading {
+             color: {{ section.settings.heading_color }} ;
+           }
+           .background-{{ section.id }}-image {
+             background-image: {{ section.settings.background-image }} ;
+           }
+     @media screen and (max-width: 749px) {
+       .content__grid input[type="radio"]#radio-slider-{{ block.id }}:checked~label[for="radio-slider-{{ block.id }}"] {
+    margin-left: 145px;
+    display: block;
   }
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-  .color-{{ section.id }}-background-colour {
-    background-color: {{ section.settings.background-colour }} ;
-  }
+   }
 {%- endstyle -%}
 <div class="Plan-Picker  color-{{ section.settings.color_scheme }}">
   <div class="Plan-Picker-container  content-container page-width  section-{{ section.id }}-padding">
     <div class="Plan-Picker__content grid ">
-      <div class="Plan-Picker__content-image  ">
-        <svg width="233" height="233" viewBox="0 0 233 233" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M186.777 204.706C235.387 165.998 243.415 95.2118 204.706 46.6013C165.998 -2.00907 95.2123 -10.0363 46.6019 28.672C-2.00851 67.3802 -10.0358 138.166 28.6725 186.776C67.3808 235.387 138.167 243.414 186.777 204.706Z" fill="#FFF5DD" stroke="#620336" stroke-width="6.46071" stroke-miterlimit="10"/>
-        </svg>
+      <div class="content-logo-top  ">
+        <div
+          class="media-logo-top media "
+          style=" max-width: {{ section.settings.image.width }}px padding-bottom: {{ 1 | divided_by: section.settings.logo-top.aspect_ratio | times: 100 }}%;"
+        >
+          {%- if block.settings['logo-top'] != blank -%}
+            {%- capture sizes -%}
+                (min-width: 1400px) 100vw, (min-width: 750px) 100vw, calc((100vw - 30px) / 2)
+            {%- endcapture -%}
+            {{
+              section.settings['logo-top']
+              | image_url: width: 1500
+              | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+            }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
       </div>
-      <div class="Plan-Picker-Subheading rte ">
+      <div class="content__Subheading rte ">
         {{ section.settings.Subheading | replace: 'p>', 'span>' }}
       </div>
 
-      <div class="Plan-Picker__Heading title h0 color-{{ section.settings.heading_color }} ">
+      <div class="content__Heading title h0 color-{{ section.id }}-heading ">
         {{ section.settings.heading }}
       </div>
 
-      <div class="Plan-Picker__Description rte">
+      <div class="content__Description rte">
         {{ section.settings.Description }}
       </div>
-      <div class="Plan-Picker__grid grid carousel  grid--3-col-desktop grid--3-col-tablet grid--1-col  content-container--full-width-mobile">
+      <div
+        class="content__grid  main-carousel   "
+        data-flickity='
+          { "freeScroll": true , "initialIndex": 1 ,  prevNextButtons: false ,
+          }
+        '
+      >
         {%- for block in section.blocks -%}
           {% case block.type %}
             {%- when 'card-block' -%}
-              <div class="card-block_item  grid grid__item color-{{ section.settings.heading_color }} ">
-                {%- if block.settings['Most-Popular_checkbox'] != true -%}
+              <div
+                class="card-block_item carousel-cell  color-{{ section.id }}-heading "
+              >
+                {%- if block.settings['Most-Popular_checkbox'] == true -%}
                   <div class="card-block_item__Most Popular rte">Most Popular</div>
                 {%- endif -%}
 
@@ -51,7 +84,7 @@
                 </div>
                 <div
                   class="card-block_image media "
-                  style=" height: {{ section.settings.image.height }}px; padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
+                  style=" max-width: {{ section.settings.image.width }}px padding-bottom: {{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100 }}%;"
                 >
                   {%- if block.settings.image != blank -%}
                     {%- capture sizes -%}
@@ -120,52 +153,28 @@
           {%- endcase -%}
         {%- endfor -%}
       </div>
+      <div class="Plan-Picker__bottom ">
+        <div
+          class="Plan-Picker__icon-bottom  media"
+          style=" max-width: {{ section.settings.image.width }}px; padding-bottom: {{ 1 | divided_by: section.settings['icon-bottom'].aspect_ratio | times: 100 }}%;"
+        >
+          {%- if section.settings['icon-bottom'] != blank -%}
+            {%- capture sizes -%}
+                (min-width: 1400px) 100vw, (min-width: 750px) 100vw, calc((100vw - 30px) / 2)
+            {%- endcapture -%}
+            {{
+              section.settings['icon-bottom']
+              | image_url: width: 1500
+              | image_tag: loading: 'lazy', sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500'
+            }}
+          {%- endif -%}
+        </div>
+        <div class="Plan-Picker__background-bottom media background-{{ section.id }}-image"></div>
+      </div>
     </div>
   </div>
+  <script src="/path/to/flickity.pkgd.min.js"></script>
 </div>
-<script>
-  $(document).ready(function () {
-    $('.carousel').slick({
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 2000,
-      dots: true,
-      centerMode: true,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            // centerMode: true,
-          },
-        },
-        {
-          breakpoint: 800,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2,
-            dots: true,
-            infinite: true,
-          },
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            dots: true,
-            infinite: true,
-            autoplay: true,
-            autoplaySpeed: 2000,
-          },
-        },
-      ],
-    });
-  });
-</script>
 {% schema %}
 {
   "name": "Plan Picker",
@@ -191,6 +200,11 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 52
+    },
+    {
+      "type": "image_picker",
+      "id": "logo-top",
+      "label": "logo"
     },
     {
       "type": "select",
@@ -243,6 +257,16 @@
       "id": "Description",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "label": "Description"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon-bottom",
+      "label": "icon bottom"
+    },
+    {
+      "type": "image_picker",
+      "id": "background-image",
+      "label": "background image "
     }
   ],
   "blocks": [
